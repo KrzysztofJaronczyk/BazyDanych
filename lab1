@@ -1,0 +1,34 @@
+
+create table employees1(
+employee_id int identity PRIMARY KEY,
+employee_name varchar(50) NOT NULL,
+salary decimal(8,2) CHECK (salary>0),
+employment_date date default getdate(),
+PESEL char(11) unique not null,
+date_of_birth date check(date_of_birth<=getdate())
+)
+create index employee_name_index on employees1(employee_name)
+
+
+
+
+create table sprzedaz(
+id_operacji smallint identity PRIMARY KEY,
+id_faktury varchar(30) not null unique,
+kategoria varchar(20) not null default 'obuwie',
+data_sprzedazy date not null default 'current_date' check(data_sprzedazy<=getdate()),
+kwota_sprzedazy decimal(8,2) check(kwota_sprzedazy>0),
+rabat tinyint not null default '0' check(rabat>=0 and rabat <=15),
+liczba_pozycji tinyint not null default '1' check(liczba_pozycji>0 and liczba_pozycji<=100)
+)
+
+create index id_faktury_index on sprzedaz(id_faktury)
+create index kategoria_index on sprzedaz(kategoria)
+
+
+
+create table samochody(
+id_samochodu int identity PRIMARY KEY,
+nazwa_modelu nvarchar(30),
+typ_nadwozia nvarchar(20) default 'sedan',
+rok_produkcji date default (year(getdate()) check(rok_produkcji

@@ -1,0 +1,51 @@
+--11.01
+--b
+SELECT * from employees where 
+PESEL is null or employment_date is null
+--c
+SELECT * from students_modules
+--d
+select *, DATEDIFF(day,planned_exam_date,GETDATE()) as number_of_days--3parametry co ma liczyc,date od której i date do kiedy ma zliczyc
+from students_modules order by planned_exam_date desc
+--e
+select count(planned_exam_date)
+from students_modules
+--f
+select COUNT(*)
+from students_modules
+
+--11.02
+--a
+select distinct student_id, exam_date 
+from student_grades
+order by exam_date desc
+--b
+select distinct student_id
+from student_grades
+where exam_date<= '2018-03-31'and exam_date>= '2018-03-01' 
+order by student_id desc
+--11.03
+select student_id,surname as family_name
+from students
+where surname ='Fisher'--kolejność wykonywania poleceń, tu nie może być family_name bo wtedy jeszcze nie istniało
+--11.04
+select module_name, lecturer_id
+from modules
+where lecturer_id=8 or lecturer_id is null --coalesce(lecturer_id,0)=0
+
+
+--11.06
+select CONVERT(varchar(20),getdate(),103)--101,102,103 to format daty
+
+--11.07
+select * from groups where
+group_no not like '%10%' --like albo not like
+
+
+--11.13
+--g
+select student_id, module_id 
+from students_modules
+except
+select student_id, module_id 
+from student_grades

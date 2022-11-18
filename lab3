@@ -32,14 +32,23 @@ where surname ='Fisher'--kolejność wykonywania poleceń, tu nie może być fam
 select module_name, lecturer_id
 from modules
 where lecturer_id=8 or lecturer_id is null --coalesce(lecturer_id,0)=0
+--11.05
 
 
 --11.06
 select CONVERT(varchar(20),getdate(),103)--101,102,103 to format daty
 
 --11.07
+--a
+select * from groups where
+group_no like 'DM%' 
+--b
 select * from groups where
 group_no not like '%10%' --like albo not like
+--c
+select * from groups where
+group_no like '%M%' 
+--d
 
 
 --11.13

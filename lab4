@@ -1,0 +1,53 @@
+--12.01
+select *
+from modules m left join students_modules sm on m.module_id=sm.module_id
+--where student_id is null
+where sm.module_id is null
+
+
+select m.module_id,module_name
+from modules m left join students_modules sm on m.module_id=sm.module_id
+--where student_id is null
+where sm.module_id is null
+order by module_name desc
+--12.02
+select m.module_id,module_name,surname
+from modules m left join students_modules sm on m.module_id=sm.module_id
+left join employees e on m.lecturer_id=e.employee_id
+where sm.module_id is null
+order by module_name asc
+
+--12.03
+select employee_id lecturer_id, surname, module_name
+from employees e inner join lecturers l on e.employee_id=l.lecturer_id
+left join modules m on l.lecturer_id=m.lecturer_id
+order by surname
+
+--12.04
+select employee_id ,first_name, surname
+from employees e inner join lecturers l on e.employee_id=l.lecturer_id
+order by surname
+
+--12.05
+select employee_id ,first_name, surname
+from employees e left join lecturers l on e.employee_id=l.lecturer_id
+where lecturer_id is null 
+order by surname
+
+--12.06
+select s.student_id, first_name, surname,group_no
+from students s left join students_modules sm on s.student_id=sm.student_id
+where module_id is null 
+order by surname,first_name
+
+--12.07
+select surname, first_name, student_id
+from students s left join students_modules sm on 
+
+
+--12.08
+select *
+from modules
+order by module_name, lecturer_id
+
+--12.09

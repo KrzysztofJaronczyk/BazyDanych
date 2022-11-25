@@ -41,8 +41,9 @@ where module_id is null
 order by surname,first_name
 
 --12.07
-select surname, first_name, student_id
-from students s left join students_modules sm on 
+select distinct s.surname, s.first_name, s.student_id
+from students s
+inner join student_grades sg ON s.student_id=sg.student_id
 
 
 --12.08

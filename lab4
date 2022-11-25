@@ -50,5 +50,46 @@ inner join student_grades sg ON s.student_id=sg.student_id
 select *
 from modules
 order by module_name, lecturer_id
+--12.14
+Select * from students s
+left join students_modules sm on s.student_id=sm.student_id	
+left join modules m on m.module_id=sm.module_id
+left join lecturers l on l.lecturer_id=m.lecturer_id
+left join employees e on e.employee_id=l.lecturer_id
+order by m.module_name desc, s.surname asc
 
---12.09
+--12.15
+select SUM(m.no_of_hours)
+from modules m
+left join lecturers l on m.lecturer_id=l.lecturer_id
+where m.lecturer_id is null or l.acad_position is null
+
+--12.16
+select *
+from modules m
+left join lecturers l on m.lecturer_id=l.lecturer_id
+where m.lecturer_id is null or l.acad_position is null
+
+--12.17
+
+
+
+--12.18
+select *
+from modules left join lecturers on modules.lecturer_id =lecturers.lecturer_id
+left join employees on lecturers.lecturer_id =employees.employee_id
+where module_name collate latin1_General_CS_AS like 'Computer%'--collate wykluczenie liter polskich po tym
+order by surname desc
+
+--12.19
+select s.student_id,s.surname,m.module_name
+from students s
+inner join students_modules sm on s.student_id=sm.student_id
+inner join modules m on sm.module_id=m.module_id
+left join student_grades sg on sm.student_id=sg.student_id 
+and sm.module_id=sg.student_id
+
+--12.21
+select * from modules m
+inner join lecturers l on m.lecturer_id = l.lecturer_id
+where m.department !=l.department

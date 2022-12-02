@@ -47,7 +47,7 @@ select * from groups where
 group_no not like '%10%' --like albo not like
 --c
 select * from groups where
-group_no like '%M%' 
+group_no like '_M%' 
 --d
 
 

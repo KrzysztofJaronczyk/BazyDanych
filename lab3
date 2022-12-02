@@ -49,6 +49,9 @@ group_no not like '%10%' --like albo not like
 select * from groups where
 group_no like '_M%' 
 --d
+select  group_no
+from groups
+where group_no  not LIKE 'd%'
 
 
 --11.13

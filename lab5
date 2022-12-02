@@ -1,0 +1,56 @@
+
+--21.01
+select module_id, module_name
+from modules
+where module_id not in
+(select module_id
+from students_modules)
+order by module_name desc
+
+--21.02
+select student_id 
+from student_grades
+where exam_date= '2018-09-30'
+intersect
+(select student_id
+from student_grades
+where exam_date= '2018-03-22')
+order by student_id desc
+
+
+--21.03
+
+
+--21.04
+select student_id,surname,first_name
+from students
+where student_id in
+(select student_id
+from modules m inner join students_modules sm on m.module_id=sm.module_id 
+where module_name='mathematics'
+and student_id not in --except
+(select student_id
+from modules m inner join students_modules sm on m.module_id=sm.module_id 
+where module_name='statistics'))
+
+--21.11
+select module_name, no_of_hours
+from modules
+where no_of_hours > 
+(select MIN(no_of_hours)
+from modules)
+order by no_of_hours
+
+
+--21.16a
+--outer apply=inner join
+-- cross apply=left join
+select s.student_id, surname, grade
+from students s 
+cross apply
+(select top(2)* 
+from student_grades sg
+where s.student_id = sg.student_id
+order by grade desc) x
+
+--21.

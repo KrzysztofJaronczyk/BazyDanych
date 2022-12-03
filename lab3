@@ -55,6 +55,34 @@ where group_no  not LIKE 'd%'
 
 
 --11.13
+--a 
+select surname from students
+union
+select surname from employees
+
+--b
+select surname from students
+union all
+select surname from employees
+
+--c
+select surname from students
+except
+select surname from employees
+
+--d
+select surname from students
+intersect
+select surname from employees
+
+--e
+
+--f 
+select employee_id from employees
+except
+select  lecturer_id from lecturers 
+
+
 --g
 select student_id, module_id 
 from students_modules

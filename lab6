@@ -1,0 +1,58 @@
+--22.01
+--a
+select surname,first_name
+from students
+where student_id in
+(select student_id
+from students_modules
+where module_id in
+(select module_id from modules 
+where module_name='Mathematics'))
+order by surname
+--b
+--funkcja na stale zapisana w bazie
+create or alter function studmod_f(@module varchar(100))
+returns table as return
+select surname,first_name
+from students
+where student_id in
+(select student_id
+from students_modules
+where module_id in
+(select module_id from modules 
+where module_name=@module))
+
+select * from studmod_f('Mathematics')
+order by surname
+
+--c
+--widok na stale zapisany w bazie
+create or alter view studmod_v as
+select surname,first_name
+from students
+where student_id in
+(select student_id
+from students_modules
+where module_id in
+(select module_id from modules 
+where module_name=SESSION_CONTEXT(N'module')))
+
+EXEC sp_set_session_context @key = N'module', @value = 'Mathematics'
+select * from studmod_v
+
+--22.06
+--a
+select top(1)*
+from students s inner join student_grades sg on s.student_id = sg.student_id
+where s.student_id = 1
+order by exam_date desc
+
+with c as (
+select s.student_id,surname,first_name, exam_date,grade, ROW_NUMBER() over(partition by s.student_id order by exam_date desc) row_num
+from students s inner join student_grades sg on s.student_id = sg.student_id)
+select * from c where row_num=1
+--albo
+select * from
+(select s.student_id,surname,first_name, exam_date,grade, ROW_NUMBER() over(partition by s.student_id order by exam_date desc) row_num
+from students s inner join student_grades sg on s.student_id = sg.student_id) c
+where row_num=1

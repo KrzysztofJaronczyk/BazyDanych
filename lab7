@@ -1,0 +1,56 @@
+
+--4a06
+select group_no, count(student_id) as number_of_students
+from students
+--where group_no is not null
+group by group_no
+having count(student_id)>=3--najlepiej w count użyć wartości klucza podstawowego
+order by number_of_students
+
+--4a08
+select d.department, sum (no_of_hours),COUNT(l.lecturer_id)--, m.lecturer_id, no_of_hours, module_id
+from departments d left join lecturers l on d.department=l.department
+left join modules m on l.lecturer_id=m.lecturer_id
+group by d.department
+
+
+--4a09
+select employee_id, surname, acad_position, count(module_id) 
+from employees e inner join lecturers l on e.employee_id=l.lecturer_id
+left join modules m on l.lecturer_id=m.lecturer_id
+group by surname, employee_id, acad_position
+order by surname
+
+--4a01
+select COUNT(student_id) from students
+
+--4a02
+select count(*) from students
+where group_no is not null
+
+--4a03
+select count(*) from students
+where group_no is null
+
+--4a04
+select count(distinct group_no) from students
+
+--4a05
+select group_no, count(student_id) as number_of_students
+from students
+--where group_no is not null
+group by group_no
+
+--4a06
+select g.grade, COUNT(g.grade)
+from grades g
+left join student_grades sg on g.grade = sg.grade
+group by g.grade
+order by g.grade
+
+--4a12
+select surname, first_name, avg(grade), COUNT(m.module_id)
+from employees inner join modules m on employee_id=m.lecturer_id
+left join student_grades sg on m.module_id=sg.module_id
+group by surname, first_name, employee_id
+order by surname, first_name

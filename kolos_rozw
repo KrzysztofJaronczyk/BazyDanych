@@ -1,0 +1,57 @@
+--1. Nazwiska studentów, którzy otrzymali ocenę zarówno z wykładu o identyfikatorze 3 jak i 12.
+--Wskazówka: wykorzystaj składnię podzapytania lub operator INTERSECT.
+select surname, s.student_id
+from students s inner join student_grades sg on s.student_id=sg.student_id
+where module_id=3 and s.student_id in 
+( select s.student_id
+from students s inner join student_grades sg on s.student_id= sg.student_id
+where module_id=12)
+
+--2. Nazwiska i imiona wykładowców wraz z sumą godzin wykładów prowadzonych przez każdego z nich ale tylko w przypadku, gdy suma godzin jest większa od 30. 
+--Kolumna zwracająca liczbę godzin ma mieć nazwę no_of_hours. 
+--Dane posortowane malejąco według liczby godzin.
+
+select surname, first_name, sum(no_of_hours) as number_of_hours
+from employees inner join modules on employee_id=lecturer_id
+group by surname, first_name
+having sum(no_of_hours) > 30
+order by number_of_hours
+
+--3. Napisz funkcję o nazwie f_stud_mod, która zwróci nazwiska i imiona studentów zapisanych na wykład o nazwie przekazanej do funkcji przy pomocy parametru. 
+--Uruchom funkcję podając jako parametr nazwę wykładu Statistics. Zwrócone dane mają być posortowane według nazwiska.
+
+
+select *
+from f_stud_mod('statistics')
+where surname like 'p%'
+order by surname 
+
+create or alter function f_stud_mod(@module varchar(100))
+returns table as return 
+--najpierw zapytanie a potem funkcja
+select surname, first_name
+from students 
+where student_id in
+(select student_id
+from students_modules
+where module_id in
+(select module_id 
+from modules 
+where module_name =@module)) 
+
+
+--4. Wszystkie dane o dwóch najstarszych studentach w każdej grupie. W zapytaniu pomiń dane o studentach, którzy nie są przypisani do żadnej grupy oraz o tych,
+--którzy nie mają przypisanej daty urodzenia.
+--Wskazówka: wykorzystaj CTE lub Derived tables i funkcję ROW_NUMBER.
+with c as ( --cte
+select * ,ROW_NUMBER() over (partition by group_no order by date_of_birth) as rownum
+from students
+where date_of_birth is not null and group_no is not null)
+select * from c
+where rownum <=2
+--inna wersja zapytania
+select * from 
+(select * ,ROW_NUMBER() over (partition by group_no order by date_of_birth) as rownum
+from students
+where date_of_birth is not null and group_no is not null) c
+where rownum <=2
